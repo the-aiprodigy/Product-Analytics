@@ -14,8 +14,8 @@ The analysis is powered by five interconnected datasets:
 
 | File | Description | Key Fields |
 | --- | --- | --- |
-| `fintech_users_1.csv` | User demographic and acquisition data. | `user_id`, `country`, `age`, `acquisition_source` |
-| `fintech_devices_1.csv` | Hardware specifications for the user's primary device. | `user_id`, `os`, `device_model`, `camera_quality_score` |
+| `fintech_users.csv` | User demographic and acquisition data. | `user_id`, `country`, `age`, `acquisition_source` |
+| `fintech_devices.csv` | Hardware specifications for the user's primary device. | `user_id`, `os`, `device_model`, `camera_quality_score` |
 | `network_logs.csv` | Telemetry regarding the user's connectivity during KYC. | `user_id`, `network_type`, `latency_ms`, `upload_speed_mbps` |
 | `sessions.csv` | High-level session metadata. | `session_id`, `user_id`, `session_start`, `session_end` |
 | `kyc_events.csv` | Granular event logs for every step of the KYC journey. | `session_id`, `event_name`, `status`, `error_code`, `timestamp` |
