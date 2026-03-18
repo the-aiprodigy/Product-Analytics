@@ -55,7 +55,7 @@ KYC-Funnel-Drop-Off-Analysis/
 │   └── processed/
 │
 ├── notebooks/
-│   └── FinTech_KYC_Funnel_Analysis.ipynb
+│   └── FinTech KYC Funnel Analysis.ipynb
 │
 ├── outputs/
 │   ├── figures/
