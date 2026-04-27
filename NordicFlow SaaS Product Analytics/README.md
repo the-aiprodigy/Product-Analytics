@@ -6,7 +6,7 @@
 
 ## 1. Project Overview
 
-This repository contains the full analytical data pipeline for the NordicFlow CRM Product Analytics Initiative. It transforms five raw source datasets into a structured, analytics-ready star schema that powers a Power BI executive dashboard and supports self-serve reporting across Product, Sales, Customer Success, and Growth teams.
+This repository contains the full analytical data pipeline for the NordicFlow CRM Product Analytics Initiative using Oracle SQL. It transforms five raw source datasets into a structured, analytics-ready star schema that powers a Power BI executive dashboard and supports self-serve reporting across Product, Sales, Customer Success, and Growth teams.
 
 ---
 
@@ -20,12 +20,12 @@ The pipeline follows a strict four-layer architecture. Data flows in one directi
 │                 Flat files loaded as-is from the ingestion tool.            │
 │                 Never modified. Retained as audit trail.                    │
 ├─────────────────────────────────────────────────────────────────────────────┤
-│  STAGE_         Typed ingestion (Bronze-equivalent)                         │
+│  STAGE_         Typed ingestion                                             │
 │                 Source data typed into Oracle tables. All source columns    │
 │                 preserved. No business logic. Includes batch_id and         │
 │                 loaded_at metadata. TRANSFORM_ reads from here.             │
 ├─────────────────────────────────────────────────────────────────────────────┤
-│  TRANSFORM_     Cleaned and enriched layer (Silver-equivalent)              │
+│  TRANSFORM_     Cleaned and enriched layer                                  │
 │                 Materialised views built on STAGE_. Applies all data        │
 │                 quality fixes: case normalisation, deduplication, null      │
 │                 handling, canonical event mapping, EUR conversion,          │
@@ -216,14 +216,48 @@ The master procedure **RUN_NORDICFLOW_PIPELINE** calls both sub-procedures in th
 ## 10. File Structure
 
 ```
-nordicflow_analytics/
+NordicFlow SaaS Product Analytics/
+│
+├── docs/                        ← Original PDFs with project background, lakehouse overview, portfolio guidance, and stakeholder needs
+│   ├── Lakehouse Overview.pdf
+│   ├── Portfolio Management.pdf
+│   ├── Project Overview.pdf
+│   └── Stakeholders Requirements.pdf
+│
+├── requirements/                ← Stakeholder requirement notes
+│   └── Nordicflow Stakeholder Requirements.md
+│
+├── scripts/
+│   └── python/
+│       └── Module_3_gold_fact_advanced.py    ← Python helper for gold‑layer advanced fact logic (Module 3)
+│
+├── sql/                            ← Core pipeline: stage → transform → analytics DDL
+│   ├── 01_stage_layer.sql          ← STAGE_ DDL + indexes + load log
+│   ├── 02_transform_layer.sql      ← TRANSFORM_ materialised views + refresh proc
+│   ├── 03_analytics_layer.sql      ← ANALYTICS_ star schema + refresh proc + scheduler
+│   ├── Exact Count for DuckDB.sql       ← Ad‑hoc row‑count query for DuckD
+│   ├── Exact Count for Oracle SQL.sql   ← Ad‑hoc row‑count query for Oracle
+│   ├── Populate CLEAN_from STAGE.sql    ← Old script version to load transform tables from stage
+│   └── Populate STAGE_from SOURCE.sql   ← Script to load stage tables from raw sources
+│
+├── setup test/                    ← DuckDB test environment and a simple test script
+│   ├── setup_example.duckdb
+│   └── test_query.py
+│
+├── src/
+│   └── raw/                       ← extracted file from the original DuckDB database file
+│       ├── Accounts.csv
+│       ├── Deals.csv
+│       ├── Geography.xlsx
+│       ├── ProductEvents.csv
+│       └── Users.csv
+│
+├── Nordicflow_README.md
+├── Nordicflow_README_V1.md
+├── ProductAnalytics.db             ← original DuckDB database file
+├── Project.md
 ├── README.md
-├── requirements/
-│   └── stakeholder_requirements.md
-└── sql/
-    ├── 01_stage_layer.sql         ← STAGE_ DDL + indexes + load log
-    ├── 02_transform_layer.sql     ← TRANSFORM_ materialised views + refresh proc
-    └── 03_analytics_layer.sql     ← ANALYTICS_ star schema + refresh proc + scheduler
+└── dim_date.txt
 ```
 
 ---
